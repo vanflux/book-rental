@@ -9,8 +9,9 @@ export class AuthGuard implements CanActivate {
 
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest<Request>();
-    const accessToken = request.headers.authorization;
-    if (!accessToken) return false;
+    const authorization = request.headers.authorization;
+    if (!authorization) return false;
+    const accessToken = authorization.substring(7); // Skip "Bearer "
     return this.authService.validateAccessToken(accessToken);
   }
 }
