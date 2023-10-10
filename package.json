@@ -1,0 +1,8 @@
+{
+  "name": "book-rental",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "echo Start"
+  },
+  "author": "vanflux"
+}
