@@ -1,4 +1,3 @@
-import { getDatabaseConnectionCredentials } from "./database.credentials";
 import { Sequelize } from 'sequelize-typescript';
 import { Book } from "../models/book.model";
 import { BookGenre } from "../models/book-renre";
@@ -8,12 +7,13 @@ import { Rental } from "../models/rental.model";
 import { User } from "../models/user.model";
 import { Provider } from "@nestjs/common";
 import { Constants } from "../constants";
+import { loadDbConfig } from '../load-config';
 
 export const databaseProviders: Provider[] = [
   {
     provide: 'SEQUELIZE',
     useFactory: async () => {
-      const sequelize = new Sequelize(getDatabaseConnectionCredentials());
+      const sequelize = new Sequelize(loadDbConfig());
       sequelize.addModels([BookGenre, Book, Genre, Language, Rental, User]);
       await sequelize.sync({
         alter: true,
