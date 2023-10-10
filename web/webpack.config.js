@@ -26,6 +26,12 @@ module.exports = {
       },
     ],
   },
+  output: {
+    publicPath: '/'
+  },
+  devServer: {
+    historyApiFallback: true
+  },
   resolve: {
     extensions: ['.ts', '.js', '.tsx', '.jsx'],
   },
