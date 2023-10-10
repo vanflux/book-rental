@@ -7,4 +7,5 @@ DB_PORT=5432
 DB_USER=user
 DB_NAME=bookrental
 DB_PASSWORD=pass
+JWT_SECRET=secret
 ```
