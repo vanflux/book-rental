@@ -17,3 +17,10 @@
   background-color: white;
   color: var(--primary);
 }
+
+.disabled {
+  border: 1px solid var(--light-gray);
+  background-color: var(--gray);
+  color: white;
+  cursor: auto;
+}

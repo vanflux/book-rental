@@ -6,6 +6,7 @@ import { BooksModule } from './books/books.module';
 import { DatabaseModule } from './database/database.module';
 import { DocsModule } from './docs/docs.module';
 import { GenresModule } from './genres/genres.module';
+import { LanguagesModule } from './languages/languages.module';
 import { loadConfig } from './load-config';
 
 @Module({
@@ -16,6 +17,7 @@ import { loadConfig } from './load-config';
     DatabaseModule,
     DocsModule,
     GenresModule,
+    LanguagesModule,
   ],
   controllers: [],
   providers: [],

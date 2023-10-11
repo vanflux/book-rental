@@ -1,8 +1,8 @@
-import { Controller, Delete, ForbiddenException, Get, Param, Query } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth, Authenticated } from '../auth/auth.decorator';
 import { AuthDto } from '../auth/auth.dto';
-import { BookDto, GetBooksInputDto, GetBooksResultDto, RentalDto } from './books.dto';
+import { BookDto, CreateBookDto, GetBooksInputDto, GetBooksResultDto, RentalDto } from './books.dto';
 import { BooksService } from './books.service';
 
 @ApiTags('books')
@@ -31,7 +31,7 @@ export class BooksController {
     return this.booksService.getBook(id);
   }
 
-  @Get('/:id/rent')
+  @Post('/:id/rent')
   @Authenticated()
   @ApiResponse({ type: RentalDto })
   async rentBook(@Param('id') id: string, @Auth() auth: AuthDto) {
@@ -39,7 +39,7 @@ export class BooksController {
     return this.booksService.rentBook(auth.userId, id);
   }
 
-  @Get('/:id/return')
+  @Post('/:id/return')
   @Authenticated()
   @ApiResponse({ type: RentalDto })
   async returnBook(@Param('id') id: string) {
@@ -50,5 +50,12 @@ export class BooksController {
   @Authenticated()
   async deleteBook(@Param('id') id: string) {
     return this.booksService.deleteBook(id);
+  }
+
+  @Post('')
+  @Authenticated()
+  @ApiResponse({ type: BookDto })
+  async createBook(@Body() createBookDto: CreateBookDto) {
+    return this.booksService.createBook(createBookDto);
   }
 }

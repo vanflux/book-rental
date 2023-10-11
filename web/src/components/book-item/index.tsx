@@ -22,13 +22,13 @@ export function BookItem({ name, slug, rented, bannerImageUrl }: Props) {
 
   return (
     <div className={styles.container}>
-      <img src={bannerImageUrl} />
+      <img src={bannerImageUrl ?? '/assets/images/book.svg'} />
       <div>{name}</div>
       <Button
         variant='secondary'
         onClick={onClick}
       >
-        {rented ? 'ALUGADO' : 'ALUGAR'}
+        {rented ? 'DEVOLVER' : 'ALUGAR'}
       </Button>
     </div>
   );

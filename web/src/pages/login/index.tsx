@@ -13,7 +13,7 @@ export function LoginPage() {
   const [emailError, setEmailError] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [passwordError, setPasswordError] = useState<string>();
-  const { mutateAsync: login, isLoading } = useLoginMutation();
+  const { mutateAsync: login } = useLoginMutation();
   const navigate = useNavigate();
 
   const goToRegister = () => {

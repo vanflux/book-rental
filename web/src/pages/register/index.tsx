@@ -14,7 +14,7 @@ export function RegisterPage() {
   const [passwordError, setPasswordError] = useState<string>();
   const [confirmPassword, setConfirmPassword] = useState<string>();
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>();
-  const { mutate: register, isLoading } = useRegisterMutation();
+  const { mutateAsync: register } = useRegisterMutation();
   const navigate = useNavigate();
 
   const goToLogin = () => {

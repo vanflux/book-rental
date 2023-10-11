@@ -9,6 +9,9 @@ import styles from './styles.module.css';
 import { NumberInput } from "../number-input";
 import { useGenres } from "../../hooks/genres";
 import { useEffect } from "react";
+import { CreateBookDto } from "../../services/books";
+import { useCreateBook } from "../../hooks/books";
+import { useLanguages } from "../../hooks/languages";
 
 interface Props {
   open: boolean;
@@ -18,28 +21,44 @@ interface Props {
 const formSchema = Yup.object().shape({
   name: Yup.string().required('Campo obrigatório'),
   authorName: Yup.string().required('Campo obrigatório'),
-  publishYear: Yup.number().required('Campo obrigatório'),
+  publishedYear: Yup.number().required('Campo obrigatório'),
   genres: Yup.array(Yup.object({ value: Yup.string().required(), label: Yup.string().required() })),
   bannerImageUrl: Yup.string(),
   editorName: Yup.string(),
   pageCount: Yup.number(),
-  language: Yup.string(),
+  language: Yup.object({ value: Yup.string().required(), label: Yup.string().required() }),
 });
 
 type FormSchema = Yup.InferType<typeof formSchema>;
 
 export function CreateBookModal({ open, onOpenChange }: Props) {
   const { data: genres } = useGenres();
+  const { data: languages } = useLanguages();
+  const { mutateAsync: createBook } = useCreateBook();
 
-  const { errors, values, touched, setFieldValue, setFieldTouched, submitForm, resetForm } = useFormik<FormSchema>({
+  const { errors, values, touched, setFieldValue, setFieldTouched, submitForm, resetForm, isValid } = useFormik<FormSchema>({
     initialValues: {} as FormSchema,
     validationSchema: formSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const createBookDto: CreateBookDto = {
+        authorName: values.authorName,
+        bannerImageUrl: values.bannerImageUrl,
+        editorName: values.editorName,
+        genresIds: values.genres?.map(genre => genre.value),
+        languageId: values.language?.value,
+        name: values.name,
+        pageCount: values.pageCount,
+        publishedYear: values.publishedYear,
+      }
+      try {
+        await createBook(createBookDto);
+        onOpenChange(false);
+      } catch {}
     }
   });
 
   const genresOptions = genres?.items.map(genre => ({ value: genre.id, label: genre.name })) ?? [];
+  const languagesOptions = languages?.items.map(language => ({ value: language.id, label: language.name })) ?? [];
 
   useEffect(() => {
     resetForm({});
@@ -60,7 +79,7 @@ export function CreateBookModal({ open, onOpenChange }: Props) {
             }}
           >
             <TextInput
-              placeholder='Nome'
+              placeholder='Nome*'
               value={values.name}
               onChange={value => {
                 setFieldTouched('name', true);
@@ -69,7 +88,7 @@ export function CreateBookModal({ open, onOpenChange }: Props) {
               errorMessage={touched.name ? errors.name : undefined}
             />
             <TextInput
-              placeholder='Nome do autor'
+              placeholder='Nome do autor*'
               value={values.authorName}
               onChange={value => {
                 setFieldTouched('authorName', true);
@@ -105,26 +124,26 @@ export function CreateBookModal({ open, onOpenChange }: Props) {
               errorMessage={touched.pageCount ? errors.pageCount : undefined}
             />
             <NumberInput
-              placeholder='Ano de publicação'
-              value={values.publishYear}
+              placeholder='Ano de publicação*'
+              value={values.publishedYear}
               onChange={value => {
-                setFieldTouched('publishYear', true);
-                setFieldValue('publishYear', value);
+                setFieldTouched('publishedYear', true);
+                setFieldValue('publishedYear', value);
               }}
-              errorMessage={touched.publishYear ? errors.publishYear : undefined}
+              errorMessage={touched.publishedYear ? errors.publishedYear : undefined}
             />
-            <TextInput
+            <Select
               placeholder='Linguagem'
-              value={values.language}
+              options={languagesOptions}
+              value={[values.language]}
               onChange={value => {
                 setFieldTouched('language', true);
-                setFieldValue('language', value);
+                setFieldValue('language', value?.[0]);
               }}
-              errorMessage={touched.language ? errors.language : undefined}
+              errorMessage={touched.language?.label ? errors.language?.label : undefined}
             />
             <Select
               multi
-              creatable
               placeholder='Gêneros'
               options={genresOptions}
               value={values.genres}
@@ -134,7 +153,7 @@ export function CreateBookModal({ open, onOpenChange }: Props) {
               }}
               errorMessage={touched.genres ? errors.genres : undefined}
             />
-            <Button>
+            <Button disabled={!isValid} type='submit'>
               CADASTRAR
             </Button>
           </form>

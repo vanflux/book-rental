@@ -2,12 +2,14 @@ import { Inject, Injectable, NotFoundException, UnauthorizedException } from '@n
 import { randomUUID } from 'crypto';
 import { Includeable, IncludeOptions, Op } from 'sequelize';
 import { WhereOptions } from 'sequelize';
+import slugify from 'slugify';
 import { Constants } from '../constants';
+import { BookGenre } from '../models/book-renre';
 import { Book } from '../models/book.model';
 import { Genre } from '../models/genre.model';
 import { Language } from '../models/language.model';
 import { Rental } from '../models/rental.model';
-import { BookDto, GetBooksInputDto, GetBooksItemResultDto, GetBooksResultDto } from './books.dto';
+import { BookDto, CreateBookDto, GetBooksInputDto, GetBooksItemResultDto, GetBooksResultDto } from './books.dto';
 
 @Injectable()
 export class BooksService {
@@ -16,6 +18,8 @@ export class BooksService {
     private bookRepository: typeof Book,
     @Inject(Constants.REPOSITORY.RENTAL)
     private rentalRepository: typeof Rental,
+    @Inject(Constants.REPOSITORY.BOOK_GENRE)
+    private bookGenreRepository: typeof BookGenre,
   ) {}
 
   async getBooks(input: GetBooksInputDto): Promise<GetBooksResultDto> {
@@ -110,10 +114,8 @@ export class BooksService {
       userId,
       bookId,
     };
-    const [rental] = await Promise.all([
-      this.rentalRepository.create(rentalBody),
-      book.update({ rentalId: rentalBody.id }),
-    ]);
+    const rental = await this.rentalRepository.create(rentalBody);
+    book.update({ rentalId: rentalBody.id });
     return rental;
   }
 
@@ -123,12 +125,58 @@ export class BooksService {
     if (!book.rentalId) return new NotFoundException('Book not rented');
     const rental = await this.rentalRepository.findByPk(book.rentalId);
     const now = new Date();
-    const [updatedRental] = await Promise.all([
-      rental.update({ endedAt: now, updatedAt: now }),
-      book.update({ rentalId: null }),
-    ]);
+    const updatedRental =  await rental.update({ endedAt: now, updatedAt: now });
+    await book.update({ rentalId: null });
     return updatedRental;
   }
+
+  async createBook(createBookDto: CreateBookDto) {
+    let genres: Genre[] = [];
+    let language: Language | undefined = undefined;
+    if (createBookDto.genresIds) {
+      try {
+        genres = await Promise.all(createBookDto.genresIds.map(id => Genre.findByPk(id)));
+      } catch {
+        throw new NotFoundException('Invalid genres');
+      }
+    }
+    if (createBookDto.languageId) {
+      try {
+        language = await Language.findByPk(createBookDto.languageId);
+      } catch {
+        throw new NotFoundException('Invalid language');
+      }
+    }
+    const book = await this.bookRepository.create({
+      id: randomUUID(),
+      slug: slugify(createBookDto.name),
+      authorName: createBookDto.authorName,
+      bannerImageUrl: createBookDto.bannerImageUrl,
+      editorName: createBookDto.editorName,
+      languageId: language?.id,
+      name: createBookDto.name,
+      pageCount: createBookDto.pageCount,
+      publishedYear: createBookDto.publishedYear,
+    });
+    await Promise.all(genres.map(genre => this.bookGenreRepository.create({
+      id: randomUUID(),
+      bookId: book.id,
+      genreId: genre.id,
+    })));
+    await book.reload({
+      include: [{
+        model: Genre,
+        as: 'genres',
+        attributes: ['id', 'name', 'slug']
+      }, {
+        model: Language,
+        as: 'language',
+        attributes: ['id', 'name']
+      }]
+    })
+    return this.bookDtoFromEntity(book);
+  }
+
   async deleteBook(bookId: string) {
     const book = await this.bookRepository.findByPk(bookId);
     if (!book) throw new NotFoundException();

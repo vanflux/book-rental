@@ -16,5 +16,6 @@ html, body, #app {
 :root {
   --primary: #ED2626;
   --light-gray: #DBDBDB;
+  --gray: #999999;
   --danger: #FF0000;
 }

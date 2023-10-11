@@ -122,3 +122,31 @@ export class RentalDto {
   @ApiProperty({ required: false, type: Date })
   public endedAt?: Date
 }
+
+// Create book dto
+
+export class CreateBookDto {
+  @ApiProperty()
+  public name: string;
+
+  @ApiProperty()
+  public authorName: string;
+
+  @ApiProperty()
+  public publishedYear: number;
+
+  @ApiProperty()
+  public genresIds: string[];
+
+  @ApiProperty()
+  public editorName?: string;
+
+  @ApiProperty()
+  public languageId?: string;
+
+  @ApiProperty()
+  public pageCount?: number;
+
+  @ApiProperty({ required: false })
+  public bannerImageUrl?: string;
+}

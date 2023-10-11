@@ -1,11 +1,10 @@
 
 import { fn } from 'sequelize';
-import { Table, Column, Model, DataType, BelongsToMany, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, BelongsToMany, BelongsTo, ForeignKey, HasMany } from 'sequelize-typescript';
 import { BookGenre } from './book-renre';
 import { Genre } from './genre.model';
 import { Language } from './language.model';
 import { Rental } from './rental.model';
-import { User } from './user.model';
 
 @Table({ tableName: 'books' })
 export class Book extends Model {
@@ -53,6 +52,6 @@ export class Book extends Model {
   @BelongsTo(() => Language)
   language?: Language;
 
-  @BelongsToMany(() => User, () => Rental)
-  users: Array<User & { Rental: Rental }>;
+  @HasMany(() => Rental)
+  rentals: Rental[];
 }

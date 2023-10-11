@@ -1,17 +1,20 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/button";
 import { Icon } from "../../components/icons";
-import { useBookBySlug } from "../../hooks/books";
+import { useBookBySlug, useDeleteBook, useRentBook, useReturnBook } from "../../hooks/books";
 import { routes } from "../../router/routes";
 import styles from './styles.module.css';
 
 export function BookPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { mutateAsync: rentBook } = useRentBook();
+  const { mutateAsync: returnBook } = useReturnBook();
+  const { mutateAsync: deleteBook } = useDeleteBook();
   if (!slug) return (
     <Navigate to={routes.BOOKS()} />
   )
-  const { data: book } = useBookBySlug(slug);
+  const { data: book, isLoading } = useBookBySlug(slug);
   
   const onBackClick = () => {
     navigate(-1);
@@ -19,6 +22,27 @@ export function BookPage() {
 
   const onBooksPageClick = () => {
     navigate(routes.BOOKS());
+  };
+
+  const onRentOrReturnClick = async () => {
+    if (!book) return;
+    try {
+      if (book.rented) {
+        await returnBook(book.id);
+      } else {
+        await rentBook(book.id);
+      }
+    } catch {}
+  };
+
+  const onDeleteClick = async () => {
+    if (!book) return;
+    try {
+      if (!book.rented) {
+        await deleteBook(book.id);
+        navigate(routes.BOOKS());
+      }
+    } catch {}
   };
   
   return (
@@ -39,10 +63,12 @@ export function BookPage() {
         </div>
       </div>
       <div className={styles.imageAndCards}>
-        <img
-          className={styles.imageCard}
-          src={book?.bannerImageUrl}
-        />
+        {!isLoading && (
+          <img
+            className={styles.imageCard}
+            src={book?.bannerImageUrl ?? '/assets/images/book.svg'}
+          />
+        )}
         <div className={styles.cards}>
           <div className={styles.infosCard}>
             <div className={styles.title}>
@@ -60,15 +86,15 @@ export function BookPage() {
             <div className={styles.info}>
               Publicação: {book?.publishedYear}
             </div>
-            <Button className={styles.rentButton}>
-              ALUGAR
+            <Button className={styles.rentButton} onClick={onRentOrReturnClick}>
+              {book?.rented ? 'DEVOLVER' : 'ALUGAR'}
             </Button>
           </div>
           <div className={styles.actionsCard}>
             <div className={styles.title}>
               Ações
             </div>
-            <Button variant='secondary' className={styles.rentButton}>
+            <Button disabled={book?.rented} variant='secondary' className={styles.rentButton} onClick={onDeleteClick}>
               DELETAR LIVRO
             </Button>
           </div>

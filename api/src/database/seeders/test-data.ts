@@ -9,7 +9,8 @@ export const up = async (queryInterface: QueryInterface, sequelize: typeof Seque
   queryInterface.bulkDelete('genres', {});
   queryInterface.bulkDelete('users', {});
 
-  const mainUser = { id: randomUUID(), email: 'lucas@mail.com', password: '...' };
+  // Password: password for jwtSecret: secret
+  const mainUser = { id: randomUUID(), email: 'test@mail.com', password: '$2b$10$CyaUlxwv6dYHTKfja/VRKOgtlbgQImyBaS7uzlIpjjl29CH2N0JgC' };
   const users = [mainUser];
 
   const languagePt = { id: randomUUID(), name: 'Português' };

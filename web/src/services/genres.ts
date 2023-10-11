@@ -1,9 +1,5 @@
 import { httpClient } from "./http-client";
 
-export interface AuthDto {
-  userId?: string;
-}
-
 export interface GetGenresResultDto {
   items: GetGenresItemResultDto[];
   totalCount: number;

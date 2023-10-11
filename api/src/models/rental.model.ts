@@ -1,6 +1,6 @@
 
 import { fn } from 'sequelize';
-import { Table, Column, Model, DataType, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import { Book } from './book.model';
 import { User } from './user.model';
 
@@ -25,4 +25,10 @@ export class Rental extends Model {
 
   @Column({ type: DataType.DATE, defaultValue: fn('now') })
   public updatedAt: Date;
+
+  @BelongsTo(() => Book)
+  book: Book;
+
+  @BelongsTo(() => User)
+  user: User;
 }
