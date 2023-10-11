@@ -1,0 +1,29 @@
+version: '3.0'
+
+services:
+  db:
+    image: postgres:16.0-alpine3.18
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: bookrental
+  
+  api:
+    build: api
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: user
+      DB_NAME: bookrental
+      DB_PASSWORD: pass
+      JWT_SECRET: secret
+    ports:
+      - 3000:3000
+
+  web:
+    build: web
+    ports:
+      - 80:80
