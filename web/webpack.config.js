@@ -24,6 +24,25 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.css$/,
+        include: /\.module\.css$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              modules: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        exclude: /\.module\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   output: {

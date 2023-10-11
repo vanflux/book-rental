@@ -1,0 +1,37 @@
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 48px;
+  border: 1px solid var(--light-gray);
+  gap: 48px;
+  min-width: 300px;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputsButton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hasNoAccount {
+  font-size: 14px;
+}
+
+.hasNoAccount > span {
+  color: var(--primary);
+  cursor: pointer;
+}
