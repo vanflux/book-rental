@@ -1,0 +1,35 @@
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex: 1;
+  padding: 24px 0px;
+}
+
+.container button {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--light-gray);
+  background-color: white;
+  border-radius: 4px;
+}
+
+.container button.selected {
+  background-color: red;
+}
+
+.itemsPerPage {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pages {
+  display: flex;
+}
+
+.buttons {
+  display: flex;
+  gap: 4px;
+}

@@ -1,0 +1,29 @@
+
+.container {
+  display: flex;
+}
+
+.filtersContainer {
+  display: flex;
+  flex-direction: column;
+  width: 152px;
+  padding: 24px;
+}
+
+.paginationAndBooks {
+  display: flex;
+  flex-direction: column;
+}
+
+.paginationContainer {
+  display: flex;
+}
+
+.booksContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 920px;
+  gap: 16px;
+}
