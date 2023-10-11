@@ -1,4 +1,4 @@
-import { SearchIcon } from '../icons/search-icon';
+import { Icon } from '../icons';
 import styles from './styles.module.css';
 
 interface Props {
@@ -15,7 +15,7 @@ export function SearchBar({ value, onChange }: Props) {
         value={value ?? ''}
         onChange={e => onChange?.(e.target.value)}
       />
-      <SearchIcon />
+      <Icon type='search' size={24} className={styles.icon} />
     </div>
   )
 }

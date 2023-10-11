@@ -24,6 +24,6 @@
   outline: none;
 }
 
-.container > svg {
+.icon {
   color: var(--primary);
 }

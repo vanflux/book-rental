@@ -30,9 +30,15 @@
 
 .pages {
   display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .buttons {
   display: flex;
   gap: 4px;
+}
+
+.arrows {
+  cursor: pointer;
 }

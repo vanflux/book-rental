@@ -4,12 +4,15 @@ import { AuthProvider } from "./contexts/auth";
 import { Router } from "./router";
 import { queryClient } from "./services/queryClient";
 import 'react-toastify/dist/ReactToastify.css';
+import { GlobalSearchProvider } from "./contexts/global-search";
 
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider >
-        <Router />
+        <GlobalSearchProvider>
+          <Router />
+        </GlobalSearchProvider>
       </AuthProvider>
       <ToastContainer />
     </QueryClientProvider>

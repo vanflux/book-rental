@@ -1,17 +1,20 @@
 import { useState } from "react";
 import { Layout } from "../../components/layout";
 import { Pagination } from "../../components/pagination";
+import { useGlobalSearch } from "../../contexts/global-search";
 import { useBooks } from "../../hooks/books";
 import { BookItem } from "./components/book-item";
 import { GenreFilter } from "./components/genre-filter";
 import styles from './styles.module.css';
 
 export function BooksPage() {
+  const { searchText, onSearchTextChange } = useGlobalSearch();
   const [genreSlug, setGenreSlug] = useState<string>();
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(25);
   const { data: books } = useBooks({
     genre: genreSlug,
+    containsName: searchText,
     page,
     pageSize
   });

@@ -18,10 +18,10 @@ export class BooksService {
     const where: WhereOptions<Book> = {};
     const include: Includeable[] = [];
     if (input.containsName) {
-      where.name = { [Op.iLike]: input.containsName };
+      where.name = { [Op.iLike]: `%${input.containsName}%` };
     }
     if (input.containsAuthorName) {
-      where.authorName = { [Op.iLike]: input.containsAuthorName };
+      where.authorName = { [Op.iLike]: `%${input.containsAuthorName}%` };
     }
     if (input.hideRented) {
       where.rentalId = null;
