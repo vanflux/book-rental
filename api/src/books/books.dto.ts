@@ -56,6 +56,9 @@ export class GetBookGenreDto {
 
     @ApiProperty()
     public name: string;
+
+    @ApiProperty()
+    public slug: string
 }
 
 export class GetBookLanguageDto {

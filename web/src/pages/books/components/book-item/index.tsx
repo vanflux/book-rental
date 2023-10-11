@@ -2,12 +2,13 @@ import { Button } from '../../../../components/button';
 import styles from './styles.module.css';
 
 interface Props {
+  id: string;
   name: string;
   rented: boolean;
-  bannerImageUrl: string;
+  bannerImageUrl?: string;
 }
 
-export function BookItem({ name, rented, bannerImageUrl }: Props) {
+export function BookItem({ id, name, rented, bannerImageUrl }: Props) {
   return (
     <div className={styles.container}>
       <img src={bannerImageUrl} />

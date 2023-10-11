@@ -1,7 +1,12 @@
 import { useGenres } from '../../../../hooks/genres';
 import styles from './styles.module.css';
 
-export function GenreFilter() {
+interface Props {
+  slug?: string;
+  onChangeSlug: (slug?: string) => void;
+}
+
+export function GenreFilter({ slug, onChangeSlug }: Props) {
   const { data: genres } = useGenres();
 
   return (
@@ -12,7 +17,14 @@ export function GenreFilter() {
       <div className={styles.itemList}>
         {genres?.items?.map((genre, i) => (
           <div key={i} className={styles.item}>
-            {genre.name}
+            <label>
+              <input
+                checked={genre.slug === slug}
+                onChange={() => onChangeSlug(genre.slug === slug ? undefined : genre.slug)}
+                type='checkbox'
+              />
+              {genre.name}
+            </label>
           </div>
         ))}
       </div>

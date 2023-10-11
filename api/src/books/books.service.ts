@@ -35,7 +35,7 @@ export class BooksService {
         as: 'genres',
         required: true,
         where: {
-          id: input.genre,
+          slug: input.genre,
         }
       });
     }
@@ -66,7 +66,7 @@ export class BooksService {
       include: [{
         model: Genre,
         as: 'genres',
-        attributes: ['id', 'name']
+        attributes: ['id', 'name', 'slug']
       }, {
         model: Language,
         as: 'language',
@@ -79,6 +79,7 @@ export class BooksService {
       genres: book.genres.map(genre => ({
         id: genre.id,
         name: genre.name,
+        slug: genre.slug,
       })),
       name: book.name,
       publishedYear: book.publishedYear,

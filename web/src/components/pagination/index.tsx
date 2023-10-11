@@ -2,17 +2,19 @@ import { useMemo } from 'react';
 import styles from './styles.module.css';
 
 interface Props {
+  totalCount?: number;
   pageSize?: number;
   page?: number;
   onPageSizeChange?: (pageSize: number) => void;
   onPageChange?: (page: number) => void;
 }
 
-const pageSizes = [16, 25, 50, 75, 100];
+const pageSizes = [4, 25, 50, 75, 100];
 
-export function Pagination({ pageSize, page, onPageSizeChange, onPageChange }: Props) {
+export function Pagination({ totalCount = 0, pageSize = pageSizes[1], page = 0, onPageSizeChange, onPageChange }: Props) {
   const showingPages = useMemo<number[]>(() => {
-    return [1,2,3,4,5];
+    const pages = [0, 1, 2, 3, 4];
+    return pages;
   }, [page]);
 
   return (
@@ -20,14 +22,26 @@ export function Pagination({ pageSize, page, onPageSizeChange, onPageChange }: P
       <div className={styles.itemsPerPage}>
         Items por página:
         <div className={styles.buttons}>
-          {pageSizes.map(item => (
-            <button key={item} className={pageSize === item ? styles.selected : ''}>{item}</button>
+          {pageSizes.map((item, i) => (
+            <button
+              key={i}
+              className={pageSize === item ? styles.selected : ''}
+              onClick={() => onPageSizeChange?.(item)}
+            >
+              {item}
+            </button>
           ))}
         </div>
       </div>
       <div className={`${styles.pages} ${styles.buttons}`}>
-        {showingPages.map(item => (
-          <button key={item} className={pageSize === item ? styles.selected : ''}>{item}</button>
+        {showingPages.map((item, i) => (
+          <button
+            key={i}
+            className={page === item ? styles.selected : ''}
+            onClick={() => onPageChange?.(item)}
+          >
+            {item + 1}
+          </button>
         ))}
       </div>
     </div>

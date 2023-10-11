@@ -1,4 +1,3 @@
-import jwtDecode from "jwt-decode";
 import { httpClient } from "./http-client";
 
 export interface AuthDto {
