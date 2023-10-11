@@ -1,0 +1,29 @@
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 38px;
+  border: 1px solid var(--light-gray);
+  border-radius: 4px;
+  padding: 0px 16px;
+  background-color: white;
+  width: 450px;
+}
+
+.input {
+  display: flex;
+  border: none;
+  font-size: 14px;
+  flex: 1;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.container > svg {
+  color: var(--primary);
+}

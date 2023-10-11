@@ -1,7 +1,15 @@
 import styles from './styles.module.css';
 
-export function Logo() {
+interface Props {
+  variant?: 'normal' | 'inverted';
+}
+
+export function Logo({ variant }: Props) {
   return (
-    <div className={styles.container}>Book Rental</div>
+    <div
+      className={`${styles.container} ${variant == 'inverted' ? styles.inverted : ''}`}
+    >
+      Book Rental
+    </div>
   );
 }

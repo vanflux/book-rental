@@ -7,3 +7,7 @@
   text-decoration: underline;
   padding: 4px;
 }
+
+.inverted {
+  color: white;
+}

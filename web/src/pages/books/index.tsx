@@ -1,6 +1,9 @@
+import { Layout } from "../../components/layout";
 
 export function BooksPage() {
   return (
-    <div>BooksPage</div>
+    <Layout>
+      <div>BooksPage</div>
+    </Layout>
   );
 }

@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { AuthDto, decodeToken, getAccessToken, setAccessToken } from "../services/auth";
 
 export interface AuthContext {
-  auth?: AuthDto & { iat: number };
+  auth?: AuthDto & { iat?: number };
   setAccessToken: (accessToken?: string) => void;
 }
 
