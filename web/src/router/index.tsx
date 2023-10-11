@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { HomePage } from "../pages/home";
 import { BooksPage } from "../pages/books";
 import { BookPage } from "../pages/book";
@@ -7,9 +7,9 @@ import { NotFoundPage } from "../pages/not-found";
 import { RegisterPage } from "../pages/register";
 import { LoginPage } from "../pages/login";
 import { ProtectedRoute } from "./protected-route";
+import { Layout } from "../components/layout";
 
 export function Router() {
-  console.log('asd', routes.BOOK_DETAILS());
   return (
     <BrowserRouter>
       <Routes>
@@ -21,22 +21,24 @@ export function Router() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path={routes.BOOKS()}
-          element={
-            <ProtectedRoute>
-              <BooksPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path={routes.BOOK_DETAILS()}
-          element={
-            <ProtectedRoute>
-              <BookPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route element={<Layout><Outlet /></Layout>}>
+          <Route
+            path={routes.BOOKS()}
+            element={
+              <ProtectedRoute>
+                <BooksPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={routes.BOOK_DETAILS()}
+            element={
+              <ProtectedRoute>
+                <BookPage />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
         <Route
           path={routes.REGISTER()}
           element={<RegisterPage />}

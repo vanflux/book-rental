@@ -10,13 +10,16 @@
   padding: 24px;
 }
 
-.paginationAndBooks {
+.headerAndBooksContainer {
   display: flex;
   flex-direction: column;
 }
 
-.paginationContainer {
+.headerContainer {
   display: flex;
+  align-items: flex-end;
+  padding: 24px 0px;
+  gap: 16px;
 }
 
 .booksContainer {

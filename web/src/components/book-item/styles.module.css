@@ -13,6 +13,12 @@
   font-size: 18px;
   font-weight: bold;
   text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+          line-clamp: 3; 
+  -webkit-box-orient: vertical;
 }
 
 .container > img {

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../../../../components/button';
-import { routes } from '../../../../router/routes';
+import { Button } from '../../components/button';
+import { useGlobalSearch } from '../../contexts/global-search';
+import { routes } from '../../router/routes';
 import styles from './styles.module.css';
 
 interface Props {
@@ -11,7 +12,13 @@ interface Props {
 }
 
 export function BookItem({ name, slug, rented, bannerImageUrl }: Props) {
+  const { onSearchTextChange } = useGlobalSearch();
   const navigate = useNavigate();
+
+  const onClick = () => {
+    navigate(routes.BOOK_DETAILS(slug));
+    onSearchTextChange();
+  }
 
   return (
     <div className={styles.container}>
@@ -19,7 +26,7 @@ export function BookItem({ name, slug, rented, bannerImageUrl }: Props) {
       <div>{name}</div>
       <Button
         variant='secondary'
-        onClick={() => (navigate(routes.BOOK_DETAILS(slug)))}
+        onClick={onClick}
       >
         {rented ? 'ALUGADO' : 'ALUGAR'}
       </Button>
