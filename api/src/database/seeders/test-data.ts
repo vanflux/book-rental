@@ -1,7 +1,11 @@
 import { randomUUID } from "crypto";
 import { QueryInterface, Sequelize } from "sequelize";
 
-export const up = async (queryInterface: QueryInterface, sequelize: typeof Sequelize) => {
+export function runTestDataSeed(queryInterface: QueryInterface) {
+  up(queryInterface);
+}
+
+export const up = async (queryInterface: QueryInterface) => {
   queryInterface.bulkDelete('books_genres', {});
   queryInterface.bulkDelete('rentals', {});
   queryInterface.bulkDelete('books', {});
@@ -210,6 +214,4 @@ export const up = async (queryInterface: QueryInterface, sequelize: typeof Seque
   await queryInterface.bulkInsert('books_genres', booksGenres);
 };
 
-export const down = async (queryInterface: QueryInterface, sequelize: typeof Sequelize) => {
-
-};
+export const down = async () => {};

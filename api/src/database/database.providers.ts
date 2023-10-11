@@ -11,7 +11,7 @@ import { loadDbConfig } from '../load-config';
 
 export const databaseProviders: Provider[] = [
   {
-    provide: 'SEQUELIZE',
+    provide: Constants.SEQUELIZE,
     useFactory: async () => {
       const sequelize = new Sequelize(loadDbConfig());
       sequelize.addModels([BookGenre, Book, Genre, Language, Rental, User]);

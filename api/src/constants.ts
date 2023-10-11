@@ -1,5 +1,6 @@
 
 export const Constants = {
+    SEQUELIZE: 'SEQUELIZE',
     REPOSITORY: {
         BOOK_GENRE: 'REPOSITORY_BOOK_GENRE',
         BOOK: 'REPOSITORY_BOOK',
