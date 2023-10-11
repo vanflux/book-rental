@@ -1,17 +1,8 @@
+import { useGenres } from '../../../../hooks/genres';
 import styles from './styles.module.css';
 
 export function GenreFilter() {
-  const genres = [
-    {
-      name: 'Gastronomia',
-    },
-    {
-      name: 'Mitologia',
-    },
-    {
-      name: 'Ficção Científica',
-    },
-  ];
+  const { data: genres } = useGenres();
 
   return (
     <div className={styles.container}>
@@ -19,7 +10,7 @@ export function GenreFilter() {
         Gêneros
       </div>
       <div className={styles.itemList}>
-        {genres.map((genre, i) => (
+        {genres?.items?.map((genre, i) => (
           <div key={i} className={styles.item}>
             {genre.name}
           </div>
