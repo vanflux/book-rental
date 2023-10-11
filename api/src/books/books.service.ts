@@ -5,7 +5,7 @@ import { Constants } from '../constants';
 import { Book } from '../models/book.model';
 import { Genre } from '../models/genre.model';
 import { Language } from '../models/language.model';
-import { GetBookDto, GetBooksInputDto, GetBooksItemResultDto, GetBooksResultDto } from './books.dto';
+import { BookDto, GetBooksInputDto, GetBooksItemResultDto, GetBooksResultDto } from './books.dto';
 
 @Injectable()
 export class BooksService {
@@ -48,13 +48,14 @@ export class BooksService {
     const books = await this.bookRepository.findAll({
       where,
       include,
-      attributes: ['id', 'bannerImageUrl', 'name', 'rentalId'],
+      attributes: ['id', 'name', 'slug', 'rentalId', 'bannerImageUrl'],
       offset: pageSize * page,
       limit: pageSize,
     });
     const items = books.map<GetBooksItemResultDto>(book => ({
       id: book.id,
       name: book.name,
+      slug: book.slug,
       rented: !!book.rentalId,
       bannerImageUrl: book.bannerImageUrl,
     }));
@@ -73,7 +74,29 @@ export class BooksService {
         attributes: ['id', 'name']
       }]
     });
-    const result: GetBookDto = {
+    return this.bookDtoFromEntity(book);
+  }
+
+  async getBookBySlug(slug: string) {
+    const book = await this.bookRepository.findOne({
+      where: {
+        slug
+      },
+      include: [{
+        model: Genre,
+        as: 'genres',
+        attributes: ['id', 'name', 'slug']
+      }, {
+        model: Language,
+        as: 'language',
+        attributes: ['id', 'name']
+      }]
+    });
+    return this.bookDtoFromEntity(book);
+  }
+
+  private bookDtoFromEntity(book: Book): BookDto {
+    return {
       id: book.id,
       authorName: book.authorName,
       genres: book.genres.map(genre => ({
@@ -91,7 +114,6 @@ export class BooksService {
         name: book.language.name
       } : undefined,
       pageCount: book.pageCount
-    };
-    return result;
+    }
   }
 }

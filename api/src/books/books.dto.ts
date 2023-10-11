@@ -45,6 +45,9 @@ export class GetBooksItemResultDto {
     public name: string;
 
     @ApiProperty()
+    public slug: string;
+
+    @ApiProperty()
     public rented: boolean;
 }
 
@@ -69,7 +72,7 @@ export class GetBookLanguageDto {
     public name: string;
 }
 
-export class GetBookDto {
+export class BookDto {
     @ApiProperty()
     public id: string;
 

@@ -19,6 +19,7 @@ export interface GetBooksItemResultDto {
   id: string;
   bannerImageUrl?: string;
   name: string;
+  slug: string;
   rented: boolean;
 }
 
@@ -32,9 +33,10 @@ export interface GetBookLanguageDto {
   name: string;
 }
 
-export interface GetBookDto {
+export interface BookDto {
   id: string;
   name: string;
+  slug: string;
   authorName: string;
   publishedYear: number;
   genres: GetBookGenreDto[];
@@ -51,6 +53,6 @@ export async function getBooks(input: GetBooksInputDto) {
   }).then(res => res.data);
 }
 
-export async function getBook(bookId: string) {
-  return httpClient.get<GetBookDto>(`/books/${bookId}`).then(res => res.data);
+export async function getBookBySlug(slug: string) {
+  return httpClient.get<BookDto>(`/books/slug/${slug}`).then(res => res.data);
 }

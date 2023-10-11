@@ -42,7 +42,7 @@ export function BooksPage() {
             {books?.items.map((book, i) => (
               <BookItem
                 key={i}
-                id={book.id}
+                slug={book.slug}
                 name={book.name}
                 bannerImageUrl={book.bannerImageUrl}
                 rented={book.rented}

@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getBook, getBooks, GetBooksInputDto } from "../services/books";
+import { getBookBySlug, getBooks, GetBooksInputDto } from "../services/books";
 
 export function useBooks(input: GetBooksInputDto) {
   return useQuery({
@@ -8,9 +8,9 @@ export function useBooks(input: GetBooksInputDto) {
   });
 }
 
-export function useBook(bookId: string) {
+export function useBookBySlug(slug: string) {
   return useQuery({
-    queryFn: () => getBook(bookId),
-    queryKey: ['books', 'one', bookId]
+    queryFn: () => getBookBySlug(slug),
+    queryKey: ['books', 'one', slug]
   });
 }

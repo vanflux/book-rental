@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Authenticated } from '../auth/auth.decorator';
-import { GetBookDto, GetBooksInputDto, GetBooksResultDto } from './books.dto';
+import { BookDto, GetBooksInputDto, GetBooksResultDto } from './books.dto';
 import { BooksService } from './books.service';
 
 @ApiTags('books')
@@ -16,9 +16,16 @@ export class BooksController {
     return this.booksService.getBooks(input);
   }
 
-  @Get(':id')
+  @Get('/slug/:slug')
   @Authenticated()
-  @ApiResponse({ type: GetBookDto })
+  @ApiResponse({ type: BookDto })
+  async getBookBySlug(@Param('slug') slug: string) {
+    return this.booksService.getBookBySlug(slug);
+  }
+
+  @Get('/:id')
+  @Authenticated()
+  @ApiResponse({ type: BookDto })
   async getBook(@Param('id') id: string) {
     return this.booksService.getBook(id);
   }
