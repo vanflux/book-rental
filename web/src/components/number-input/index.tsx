@@ -19,12 +19,17 @@ export function NumberInput({ value, onChange, ...rest }: Props) {
   }, [value]);
 
   const handleChange = (value?: string) => {
-    const num = parseInt(value ?? '');
-    if (isNaN(num)) {
-      setInternalValue(value);
+    if (value?.trim() == '') {
+      setInternalValue('');
+      onChange?.();
     } else {
-      onChange?.(num);
-      setInternalValue(String(value));
+      const num = parseInt(value ?? '');
+      if (isNaN(num)) {
+        setInternalValue(value);
+      } else {
+        onChange?.(num);
+        setInternalValue(String(value));
+      }
     }
   };
 

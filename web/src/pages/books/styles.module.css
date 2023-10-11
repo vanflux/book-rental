@@ -8,6 +8,7 @@
   flex-direction: column;
   width: 180px;
   padding: 24px;
+  gap: 16px;
 }
 
 .headerAndBooksContainer {

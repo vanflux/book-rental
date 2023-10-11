@@ -7,16 +7,22 @@ import { useBooks } from "../../hooks/books";
 import { BookItem } from "../../components/book-item";
 import { GenreFilter } from "./components/genre-filter";
 import styles from './styles.module.css';
+import { PublishedYearFilter } from "./components/published-year-filter";
+import { AuthorNameFilter } from "./components/author-name-filter";
 
 export function BooksPage() {
   const { searchText } = useGlobalSearch();
   const [genreSlug, setGenreSlug] = useState<string>();
+  const [containsAuthorName, setContainsAuthorName] = useState<string>();
+  const [publishedYear, setPublishedYear] = useState<number>();
   const [createBookOpen, setCreateBookOpen] = useState(false);
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(25);
   const { data: books } = useBooks({
     genre: genreSlug,
     containsName: searchText,
+    publishedYear,
+    containsAuthorName,
     page,
     pageSize
   });
@@ -28,6 +34,14 @@ export function BooksPage() {
         <GenreFilter
           slug={genreSlug}
           onChangeSlug={setGenreSlug}
+        />
+        <PublishedYearFilter
+          publishedYear={publishedYear}
+          onChangePublishedYear={setPublishedYear}
+        />
+        <AuthorNameFilter
+          authorName={containsAuthorName}
+          onChangeAuthorName={setContainsAuthorName}
         />
       </div>
       <div className={styles.headerAndBooksContainer}>
