@@ -103,3 +103,22 @@ export class BookDto {
     @ApiProperty()
     public rented: boolean;
 }
+
+// Rental dto
+
+export class RentalDto {
+  @ApiProperty()
+  public id: string;
+
+  @ApiProperty()
+  public userId: string;
+
+  @ApiProperty()
+  public bookId: string
+
+  @ApiProperty({ type: Date })
+  public startedAt: Date
+
+  @ApiProperty({ required: false, type: Date })
+  public endedAt?: Date
+}

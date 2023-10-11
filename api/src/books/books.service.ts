@@ -1,10 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import { Includeable, IncludeOptions, Op } from 'sequelize';
 import { WhereOptions } from 'sequelize';
 import { Constants } from '../constants';
 import { Book } from '../models/book.model';
 import { Genre } from '../models/genre.model';
 import { Language } from '../models/language.model';
+import { Rental } from '../models/rental.model';
 import { BookDto, GetBooksInputDto, GetBooksItemResultDto, GetBooksResultDto } from './books.dto';
 
 @Injectable()
@@ -12,6 +14,8 @@ export class BooksService {
   constructor(
     @Inject(Constants.REPOSITORY.BOOK)
     private bookRepository: typeof Book,
+    @Inject(Constants.REPOSITORY.RENTAL)
+    private rentalRepository: typeof Rental,
   ) {}
 
   async getBooks(input: GetBooksInputDto): Promise<GetBooksResultDto> {
@@ -74,6 +78,7 @@ export class BooksService {
         attributes: ['id', 'name']
       }]
     });
+    if (!book) throw new NotFoundException();
     return this.bookDtoFromEntity(book);
   }
 
@@ -92,7 +97,43 @@ export class BooksService {
         attributes: ['id', 'name']
       }]
     });
+    if (!book) throw new NotFoundException();
     return this.bookDtoFromEntity(book);
+  }
+
+  async rentBook(userId: string, bookId: string) {
+    const book = await this.bookRepository.findByPk(bookId);
+    if (!book) throw new NotFoundException();
+    if (book.rentalId) return new UnauthorizedException('Book already rented');
+    const rentalBody = {
+      id: randomUUID(),
+      userId,
+      bookId,
+    };
+    const [rental] = await Promise.all([
+      this.rentalRepository.create(rentalBody),
+      book.update({ rentalId: rentalBody.id }),
+    ]);
+    return rental;
+  }
+
+  async returnBook(bookId: string) {
+    const book = await this.bookRepository.findByPk(bookId);
+    if (!book) throw new NotFoundException();
+    if (!book.rentalId) return new NotFoundException('Book not rented');
+    const rental = await this.rentalRepository.findByPk(book.rentalId);
+    const now = new Date();
+    const [updatedRental] = await Promise.all([
+      rental.update({ endedAt: now, updatedAt: now }),
+      book.update({ rentalId: null }),
+    ]);
+    return updatedRental;
+  }
+  async deleteBook(bookId: string) {
+    const book = await this.bookRepository.findByPk(bookId);
+    if (!book) throw new NotFoundException();
+    if (book.rentalId) return new UnauthorizedException('Book is rented');
+    await book.destroy();
   }
 
   private bookDtoFromEntity(book: Book): BookDto {

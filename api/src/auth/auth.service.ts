@@ -54,13 +54,10 @@ export class AuthService {
     return { accessToken };
   }
 
-  validateAccessToken(accessToken: string) {
+  decodeToken(accessToken: string) {
     try {
-      verify(accessToken, this.jwtSecret);
-      return true;
-    } catch {
-      return false;
-    }
+      return verify(accessToken, this.jwtSecret) as AuthDto;
+    } catch {}
   }
 
   private createAccessToken(authDto: AuthDto) {
