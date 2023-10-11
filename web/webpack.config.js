@@ -1,6 +1,7 @@
 const { resolve } = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -58,6 +59,14 @@ module.exports = {
     new ReactRefreshWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: resolve(__dirname, './public/index.html')
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: 'public/assets',
+          to: 'assets'
+        },
+      ],
     }),
   ]
 }
