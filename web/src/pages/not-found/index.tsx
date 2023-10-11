@@ -1,6 +1,8 @@
+import { Navigate } from "react-router-dom";
+import { routes } from "../../router/routes";
 
 export function NotFoundPage() {
   return (
-    <div>NotFound</div>
+    <Navigate to={routes.HOME()} />
   );
 }
