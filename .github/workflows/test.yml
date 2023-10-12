@@ -16,4 +16,5 @@ jobs:
       with:
         url: "http://localhost:3000/dev/status"
         timeout: 60
+      - run: npm i
       - run: npm t
