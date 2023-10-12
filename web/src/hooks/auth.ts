@@ -2,7 +2,7 @@ import { AxiosError, HttpStatusCode } from 'axios'
 import { useMutation } from 'react-query'
 import { toast } from 'react-toastify'
 import { useAuth } from '../contexts/auth'
-import { decodeToken, login, register } from '../services/auth'
+import { login, register } from '../services/auth'
 
 export function useRegisterMutation() {
   const { setAccessToken } = useAuth()

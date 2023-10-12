@@ -21,7 +21,7 @@ export class LanguagesService {
       id: language.id,
       name: language.name,
     }));
-    const totalCount = items.length; // TODO: If pagination needed, the attribute is already here
+    const totalCount = items.length; // If pagination needed, the attribute is already here
     return { items, totalCount };
   }
 }

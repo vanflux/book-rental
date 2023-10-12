@@ -19,7 +19,7 @@ export class GenresService {
       name: genre.name,
       slug: genre.slug,
     }));
-    const totalCount = items.length; // TODO: If pagination needed, the attribute is already here
+    const totalCount = items.length; // If pagination needed, the attribute is already here
     return { items, totalCount };
   }
 }

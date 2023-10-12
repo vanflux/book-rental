@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useState } from 'react'
+import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react'
 
 export interface GlobalSearchContext {
   searchText?: string
@@ -10,15 +10,16 @@ const context = createContext<GlobalSearchContext>({
 })
 
 export const GlobalSearchProvider = ({ children }: PropsWithChildren) => {
-  const [searchText, setSearchText] = useState<string>()
+  const [searchText, setSearchText] = useState<string>();
+  const value = useMemo<GlobalSearchContext>(() => ({
+    searchText,
+    onSearchTextChange: (searchText) => {
+      setSearchText(searchText)
+    },
+  }), [searchText]);
   return (
     <context.Provider
-      value={{
-        searchText,
-        onSearchTextChange: (searchText) => {
-          setSearchText(searchText)
-        },
-      }}
+      value={value}
     >
       {children}
     </context.Provider>

@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useState } from 'react'
+import { createContext, PropsWithChildren, useContext, useMemo, useState } from 'react'
 import { AuthDto, decodeToken, getAccessToken, setAccessToken } from '../services/auth'
 
 export interface AuthContext {
@@ -15,19 +15,20 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     const accessToken = getAccessToken()
     if (accessToken) return decodeToken(accessToken)
   })
+  const value = useMemo<AuthContext>(() => ({
+    auth: authDto,
+    setAccessToken: (accessToken) => {
+      setAccessToken(accessToken)
+      if (accessToken) {
+        setAuthDto(decodeToken(accessToken))
+      } else {
+        setAuthDto(undefined)
+      }
+    },
+  }), [authDto]);
   return (
     <context.Provider
-      value={{
-        auth: authDto,
-        setAccessToken: (accessToken) => {
-          setAccessToken(accessToken)
-          if (accessToken) {
-            setAuthDto(decodeToken(accessToken))
-          } else {
-            setAuthDto(undefined)
-          }
-        },
-      }}
+      value={value}
     >
       {children}
     </context.Provider>

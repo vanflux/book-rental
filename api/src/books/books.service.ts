@@ -5,8 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { Includeable, IncludeOptions, Op } from 'sequelize';
-import { WhereOptions } from 'sequelize';
+import { Includeable, Op, WhereOptions } from 'sequelize';
 import slugify from 'slugify';
 import { Constants } from '../constants';
 import { BookGenre } from '../models/book-renre';

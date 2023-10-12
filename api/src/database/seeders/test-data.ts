@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
-import { QueryInterface, Sequelize } from 'sequelize';
+import { QueryInterface } from 'sequelize';
 
-export function runTestDataSeed(queryInterface: QueryInterface) {
+export const runTestDataSeed = async (queryInterface: QueryInterface) => {
   up(queryInterface);
 }
 
@@ -330,18 +330,6 @@ export const up = async (queryInterface: QueryInterface) => {
     genreId: genreBiografia.id,
   });
 
-  const book10 = {
-    id: randomUUID(),
-    name: '',
-    slug: '',
-    authorName: '',
-    publishedYear: 0,
-    bannerImageUrl: '',
-    editorName: '',
-    languageId: languagePt.id,
-    pageCount: 0,
-  };
-
   await queryInterface.bulkInsert('users', users);
   await queryInterface.bulkInsert('languages', languages);
   await queryInterface.bulkInsert('genres', genres);
@@ -349,4 +337,6 @@ export const up = async (queryInterface: QueryInterface) => {
   await queryInterface.bulkInsert('books_genres', booksGenres);
 };
 
-export const down = async () => {};
+export const down = async () => {
+  console.log('Down');
+};
