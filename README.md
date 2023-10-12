@@ -73,3 +73,9 @@ Inicialmente sempre é chamada a rota `/dev/db/recreate` para resetar o banco de
 # Formatação
 
 Execute `npm run format` na raiz do projeto para formatar o código.
+
+# Avaliação de código
+
+Foi usado o Sonar Cloud para avaliar o código. Para ver o relatório basta acessar:
+
+https://sonarcloud.io/summary/overall?id=vanflux_book-rental
