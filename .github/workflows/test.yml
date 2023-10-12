@@ -16,5 +16,9 @@ jobs:
         with:
           url: "http://localhost:3000/dev/status"
           timeout: 60
-      - run: npm i
-      - run: npm t
+      - name: Install dependencies
+        working-directory: ./tests
+        run: npm i
+      - name: Run tests
+        working-directory: ./tests
+        run: npm t
