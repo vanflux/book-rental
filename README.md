@@ -21,7 +21,8 @@ Uma aplicação para alugar livros.
 ### Com Docker
 
 - Execute `docker-compose up -d`.
-- A este ponto a aplicação com o banco de dados + api + web devem estar rodando, porém o banco de dados não está populado.
+- A este ponto a api deve estar rodando em [http://localhost:3000/](http://localhost:3000/) e a web em [http://localhost:8080/](http://localhost:8080/)
+- Porém, o banco de dados não está populado.
 - Se quiser inserir dados de teste vá até [http://localhost:3000/docs](http://localhost:3000/docs).
 - ![](./docs/assets/recreate-db.png)
 - E clique em "Execute", esta rota de desenvolvimento recria e aplica um seed no banco de dados.

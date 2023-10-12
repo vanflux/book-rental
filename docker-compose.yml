@@ -2,6 +2,7 @@ version: '3.0'
 
 services:
   db:
+    restart: always
     image: postgres:16.0-alpine3.18
     restart: always
     ports:
@@ -12,6 +13,7 @@ services:
       POSTGRES_DB: bookrental
   
   api:
+    restart: always
     build: api
     environment:
       DB_HOST: db
@@ -22,8 +24,11 @@ services:
       JWT_SECRET: secret
     ports:
       - 3000:3000
+    depends_on:
+      - db
 
   web:
+    restart: always
     build: web
     ports:
-      - 80:80
+      - 8080:80
