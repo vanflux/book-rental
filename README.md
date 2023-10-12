@@ -69,3 +69,7 @@ Casos cobertos:
 Inicialmente sempre é chamada a rota `/dev/db/recreate` para resetar o banco de dados e inserir dados de teste.
 
 ![](./docs/assets/tests.png)
+
+# Formatação
+
+Execute `npm run format` na raiz do projeto para formatar o código.

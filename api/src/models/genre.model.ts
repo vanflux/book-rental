@@ -1,6 +1,11 @@
-
 import { fn } from 'sequelize';
-import { Table, Column, Model, DataType, BelongsToMany } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  BelongsToMany,
+} from 'sequelize-typescript';
 import { BookGenre } from './book-renre';
 import { Book } from './book.model';
 

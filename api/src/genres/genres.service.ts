@@ -14,7 +14,7 @@ export class GenresService {
     const genres = await this.genreRepository.findAll({
       attributes: ['id', 'name', 'slug'],
     });
-    const items = genres.map<GetGenresItemResultDto>(genre => ({
+    const items = genres.map<GetGenresItemResultDto>((genre) => ({
       id: genre.id,
       name: genre.name,
       slug: genre.slug,

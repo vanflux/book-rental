@@ -1,7 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Constants } from '../constants';
 import { Language } from '../models/language.model';
-import { GetLanguagesItemResultDto, GetLanguagesResultDto } from './languages.dto';
+import {
+  GetLanguagesItemResultDto,
+  GetLanguagesResultDto,
+} from './languages.dto';
 
 @Injectable()
 export class LanguagesService {
@@ -14,7 +17,7 @@ export class LanguagesService {
     const languages = await this.languageRepository.findAll({
       attributes: ['id', 'name'],
     });
-    const items = languages.map<GetLanguagesItemResultDto>(language => ({
+    const items = languages.map<GetLanguagesItemResultDto>((language) => ({
       id: language.id,
       name: language.name,
     }));

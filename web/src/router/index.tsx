@@ -1,13 +1,13 @@
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import { HomePage } from "../pages/home";
-import { BooksPage } from "../pages/books";
-import { BookPage } from "../pages/book";
-import { routes } from "./routes";
-import { NotFoundPage } from "../pages/not-found";
-import { RegisterPage } from "../pages/register";
-import { LoginPage } from "../pages/login";
-import { ProtectedRoute } from "./protected-route";
-import { Layout } from "../components/layout";
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
+import { HomePage } from '../pages/home'
+import { BooksPage } from '../pages/books'
+import { BookPage } from '../pages/book'
+import { routes } from './routes'
+import { NotFoundPage } from '../pages/not-found'
+import { RegisterPage } from '../pages/register'
+import { LoginPage } from '../pages/login'
+import { ProtectedRoute } from './protected-route'
+import { Layout } from '../components/layout'
 
 export function Router() {
   return (
@@ -21,7 +21,13 @@ export function Router() {
             </ProtectedRoute>
           }
         />
-        <Route element={<Layout><Outlet /></Layout>}>
+        <Route
+          element={
+            <Layout>
+              <Outlet />
+            </Layout>
+          }
+        >
           <Route
             path={routes.BOOKS()}
             element={
@@ -39,15 +45,9 @@ export function Router() {
             }
           />
         </Route>
-        <Route
-          path={routes.REGISTER()}
-          element={<RegisterPage />}
-        />
-        <Route
-          path={routes.LOGIN()}
-          element={<LoginPage />}
-        />
-        <Route path='*' element={<NotFoundPage />} />
+        <Route path={routes.REGISTER()} element={<RegisterPage />} />
+        <Route path={routes.LOGIN()} element={<LoginPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   )

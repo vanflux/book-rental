@@ -1,7 +1,7 @@
-import { Inject, Injectable } from "@nestjs/common";
-import { Sequelize } from "sequelize";
-import { Constants } from "../constants";
-import { runTestDataSeed } from "../database/seeders/test-data";
+import { Inject, Injectable } from '@nestjs/common';
+import { Sequelize } from 'sequelize';
+import { Constants } from '../constants';
+import { runTestDataSeed } from '../database/seeders/test-data';
 
 @Injectable()
 export class DevService {

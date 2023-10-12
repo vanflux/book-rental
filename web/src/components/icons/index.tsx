@@ -1,26 +1,26 @@
-import { ChevronLeftIcon } from "./types/chevron-left";
-import { ChevronRightIcon } from "./types/chevron-right";
-import { SearchIcon } from "./types/search-icon";
+import { ChevronLeftIcon } from './types/chevron-left'
+import { ChevronRightIcon } from './types/chevron-right'
+import { SearchIcon } from './types/search-icon'
 
 interface Props {
-  size?: number | string;
-  type: IconType;
-  color?: string;
-  className?: string;
-  onClick?: () => void;
+  size?: number | string
+  type: IconType
+  color?: string
+  className?: string
+  onClick?: () => void
 }
 
 const types = {
   search: SearchIcon,
   chevronLeft: ChevronLeftIcon,
   chevronRight: ChevronRightIcon,
-} as const;
+} as const
 
-export type IconType = keyof typeof types;
+export type IconType = keyof typeof types
 
 export const Icon = ({ size = 24, type, color, className, onClick }: Props) => {
-  const Component = types[type];
-  if (!Component) return null;
+  const Component = types[type]
+  if (!Component) return null
   return (
     <div
       className={className}
@@ -29,11 +29,11 @@ export const Icon = ({ size = 24, type, color, className, onClick }: Props) => {
         height: size,
         minWidth: size,
         minHeight: size,
-        color
+        color,
       }}
       onClick={onClick}
     >
       {<Component />}
     </div>
-  );
+  )
 }

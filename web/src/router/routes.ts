@@ -4,4 +4,4 @@ export const routes = {
   BOOK_DETAILS: (slug?: string) => `/livro/${slug ?? ':slug'}`,
   REGISTER: () => `/cadastro`,
   LOGIN: () => `/entrar`,
-};
+}

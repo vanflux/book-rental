@@ -1,7 +1,9 @@
-import { SequelizeOptions } from "sequelize-typescript";
+import { SequelizeOptions } from 'sequelize-typescript';
 
-const missingEnv = (variable: string) => `Missing ${variable} enviroment variable!`;
-const invalidEnv = (variable: string) => `Invalid ${variable} enviroment variable!`;
+const missingEnv = (variable: string) =>
+  `Missing ${variable} enviroment variable!`;
+const invalidEnv = (variable: string) =>
+  `Invalid ${variable} enviroment variable!`;
 
 export function loadConfig() {
   return {

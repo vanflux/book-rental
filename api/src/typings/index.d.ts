@@ -1,4 +1,4 @@
-import { AuthDto } from "../auth/auth.dto";
+import { AuthDto } from '../auth/auth.dto';
 
 declare global {
   declare namespace Express {
@@ -8,4 +8,4 @@ declare global {
   }
 }
 
-export { }
+export {};

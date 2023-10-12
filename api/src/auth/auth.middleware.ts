@@ -1,13 +1,10 @@
-
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
-  constructor(
-    private authService: AuthService
-  ) {}
+  constructor(private authService: AuthService) {}
 
   use(req: Request, _: Response, next: NextFunction) {
     const authorization = req.headers.authorization;

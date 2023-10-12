@@ -28,8 +28,6 @@ const isProd = process.env.NODE_ENV === 'production';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .forRoutes('*');
+    consumer.apply(AuthMiddleware).forRoutes('*');
   }
 }

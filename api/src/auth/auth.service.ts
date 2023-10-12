@@ -1,11 +1,22 @@
-import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { compare, genSalt, hash } from 'bcrypt';
 import { randomUUID } from 'crypto';
 import { sign, verify } from 'jsonwebtoken';
 import { Constants } from '../constants';
 import { User } from '../models/user.model';
-import { AuthDto, LoginDto, LoginResultDto, RegisterDto, RegisterResultDto } from './auth.dto';
+import {
+  AuthDto,
+  LoginDto,
+  LoginResultDto,
+  RegisterDto,
+  RegisterResultDto,
+} from './auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +35,7 @@ export class AuthService {
       attributes: ['id', 'password'],
       where: {
         email: loginDto.email,
-      }
+      },
     });
     if (!existingUser) throw new UnauthorizedException();
     const correct = await compare(loginDto.password, existingUser.password);
@@ -39,7 +50,7 @@ export class AuthService {
       attributes: ['email'],
       where: {
         email: registerDto.email,
-      }
+      },
     });
     if (existingUser) throw new ConflictException();
     const salt = await genSalt();

@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { Includeable, IncludeOptions, Op } from 'sequelize';
 import { WhereOptions } from 'sequelize';
@@ -9,7 +14,13 @@ import { Book } from '../models/book.model';
 import { Genre } from '../models/genre.model';
 import { Language } from '../models/language.model';
 import { Rental } from '../models/rental.model';
-import { BookDto, CreateBookDto, GetBooksInputDto, GetBooksItemResultDto, GetBooksResultDto } from './books.dto';
+import {
+  BookDto,
+  CreateBookDto,
+  GetBooksInputDto,
+  GetBooksItemResultDto,
+  GetBooksResultDto,
+} from './books.dto';
 
 @Injectable()
 export class BooksService {
@@ -44,12 +55,12 @@ export class BooksService {
         required: true,
         where: {
           slug: input.genre,
-        }
+        },
       });
     }
     const totalCount = await this.bookRepository.count({
       where,
-      include
+      include,
     });
     const page = input.page ?? 0;
     const pageSize = Math.max(1, Math.min(100, input.pageSize ?? 20));
@@ -60,7 +71,7 @@ export class BooksService {
       offset: pageSize * page,
       limit: pageSize,
     });
-    const items = books.map<GetBooksItemResultDto>(book => ({
+    const items = books.map<GetBooksItemResultDto>((book) => ({
       id: book.id,
       name: book.name,
       slug: book.slug,
@@ -72,15 +83,18 @@ export class BooksService {
 
   async getBook(id: string) {
     const book = await this.bookRepository.findByPk(id, {
-      include: [{
-        model: Genre,
-        as: 'genres',
-        attributes: ['id', 'name', 'slug']
-      }, {
-        model: Language,
-        as: 'language',
-        attributes: ['id', 'name']
-      }]
+      include: [
+        {
+          model: Genre,
+          as: 'genres',
+          attributes: ['id', 'name', 'slug'],
+        },
+        {
+          model: Language,
+          as: 'language',
+          attributes: ['id', 'name'],
+        },
+      ],
     });
     if (!book) throw new NotFoundException();
     return this.bookDtoFromEntity(book);
@@ -89,17 +103,20 @@ export class BooksService {
   async getBookBySlug(slug: string) {
     const book = await this.bookRepository.findOne({
       where: {
-        slug
+        slug,
       },
-      include: [{
-        model: Genre,
-        as: 'genres',
-        attributes: ['id', 'name', 'slug']
-      }, {
-        model: Language,
-        as: 'language',
-        attributes: ['id', 'name']
-      }]
+      include: [
+        {
+          model: Genre,
+          as: 'genres',
+          attributes: ['id', 'name', 'slug'],
+        },
+        {
+          model: Language,
+          as: 'language',
+          attributes: ['id', 'name'],
+        },
+      ],
     });
     if (!book) throw new NotFoundException();
     return this.bookDtoFromEntity(book);
@@ -125,7 +142,7 @@ export class BooksService {
     if (!book.rentalId) return new NotFoundException('Book not rented');
     const rental = await this.rentalRepository.findByPk(book.rentalId);
     const now = new Date();
-    const updatedRental =  await rental.update({ endedAt: now, updatedAt: now });
+    const updatedRental = await rental.update({ endedAt: now, updatedAt: now });
     await book.update({ rentalId: null });
     return updatedRental;
   }
@@ -135,7 +152,9 @@ export class BooksService {
     let language: Language | undefined = undefined;
     if (createBookDto.genresIds) {
       try {
-        genres = await Promise.all(createBookDto.genresIds.map(id => Genre.findByPk(id)));
+        genres = await Promise.all(
+          createBookDto.genresIds.map((id) => Genre.findByPk(id)),
+        );
       } catch {
         throw new NotFoundException('Invalid genres');
       }
@@ -158,22 +177,29 @@ export class BooksService {
       pageCount: createBookDto.pageCount,
       publishedYear: createBookDto.publishedYear,
     });
-    await Promise.all(genres.map(genre => this.bookGenreRepository.create({
-      id: randomUUID(),
-      bookId: book.id,
-      genreId: genre.id,
-    })));
+    await Promise.all(
+      genres.map((genre) =>
+        this.bookGenreRepository.create({
+          id: randomUUID(),
+          bookId: book.id,
+          genreId: genre.id,
+        }),
+      ),
+    );
     await book.reload({
-      include: [{
-        model: Genre,
-        as: 'genres',
-        attributes: ['id', 'name', 'slug']
-      }, {
-        model: Language,
-        as: 'language',
-        attributes: ['id', 'name']
-      }]
-    })
+      include: [
+        {
+          model: Genre,
+          as: 'genres',
+          attributes: ['id', 'name', 'slug'],
+        },
+        {
+          model: Language,
+          as: 'language',
+          attributes: ['id', 'name'],
+        },
+      ],
+    });
     return this.bookDtoFromEntity(book);
   }
 
@@ -188,7 +214,7 @@ export class BooksService {
     return {
       id: book.id,
       authorName: book.authorName,
-      genres: book.genres.map(genre => ({
+      genres: book.genres.map((genre) => ({
         id: genre.id,
         name: genre.name,
         slug: genre.slug,
@@ -198,11 +224,13 @@ export class BooksService {
       rented: !!book.rentalId,
       bannerImageUrl: book.bannerImageUrl,
       editorName: book.editorName,
-      language: book.language ? {
-        id: book.language.id,
-        name: book.language.name
-      } : undefined,
-      pageCount: book.pageCount
-    }
+      language: book.language
+        ? {
+            id: book.language.id,
+            name: book.language.name,
+          }
+        : undefined,
+      pageCount: book.pageCount,
+    };
   }
 }

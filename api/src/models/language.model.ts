@@ -1,4 +1,3 @@
-
 import { fn } from 'sequelize';
 import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
 import { Book } from './book.model';

@@ -1,12 +1,12 @@
 import { Sequelize } from 'sequelize-typescript';
-import { Book } from "../models/book.model";
-import { BookGenre } from "../models/book-renre";
-import { Genre } from "../models/genre.model";
-import { Language } from "../models/language.model";
-import { Rental } from "../models/rental.model";
-import { User } from "../models/user.model";
-import { Provider } from "@nestjs/common";
-import { Constants } from "../constants";
+import { Book } from '../models/book.model';
+import { BookGenre } from '../models/book-renre';
+import { Genre } from '../models/genre.model';
+import { Language } from '../models/language.model';
+import { Rental } from '../models/rental.model';
+import { User } from '../models/user.model';
+import { Provider } from '@nestjs/common';
+import { Constants } from '../constants';
 import { loadDbConfig } from '../load-config';
 
 export const databaseProviders: Provider[] = [

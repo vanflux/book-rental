@@ -1,5 +1,6 @@
-
-html, body, #app {
+html,
+body,
+#app {
   display: flex;
   flex-direction: column;
   margin: 0px;
@@ -14,8 +15,8 @@ html, body, #app {
 }
 
 :root {
-  --primary: #ED2626;
-  --light-gray: #DBDBDB;
+  --primary: #ed2626;
+  --light-gray: #dbdbdb;
   --gray: #999999;
-  --danger: #FF0000;
+  --danger: #ff0000;
 }

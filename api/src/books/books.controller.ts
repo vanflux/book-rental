@@ -1,8 +1,23 @@
-import { Body, Controller, Delete, ForbiddenException, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  ForbiddenException,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth, Authenticated } from '../auth/auth.decorator';
 import { AuthDto } from '../auth/auth.dto';
-import { BookDto, CreateBookDto, GetBooksInputDto, GetBooksResultDto, RentalDto } from './books.dto';
+import {
+  BookDto,
+  CreateBookDto,
+  GetBooksInputDto,
+  GetBooksResultDto,
+  RentalDto,
+} from './books.dto';
 import { BooksService } from './books.service';
 
 @ApiTags('books')
