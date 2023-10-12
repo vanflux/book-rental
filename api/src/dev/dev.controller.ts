@@ -1,4 +1,4 @@
-import { Controller, Post } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { DevService } from './dev.service';
 
@@ -6,6 +6,11 @@ import { DevService } from './dev.service';
 @Controller('/dev')
 export class DevController {
   constructor(private readonly devService: DevService) {}
+
+  @Get('/status')
+  async status() {
+    return 'OK';
+  }
 
   @Post('/db/drop')
   async dbDrop() {

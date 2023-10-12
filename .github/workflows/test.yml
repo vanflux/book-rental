@@ -1,0 +1,19 @@
+name: Test
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test-features:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+      - run: docker-compose up -d
+      uses: mydea/action-wait-for-api@v1
+      with:
+        url: "http://localhost:3000/dev/status"
+        timeout: 60
+      - run: npm t
