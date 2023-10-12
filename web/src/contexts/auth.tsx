@@ -4,10 +4,12 @@ import { AuthDto, decodeToken, getAccessToken, setAccessToken } from '../service
 export interface AuthContext {
   auth?: AuthDto & { iat?: number }
   setAccessToken: (accessToken?: string) => void
+  logout: () => void
 }
 
 const context = createContext<AuthContext>({
   setAccessToken() {},
+  logout() {},
 })
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
@@ -25,6 +27,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
         setAuthDto(undefined)
       }
     },
+    logout: () => {
+      setAccessToken(undefined)
+      setAuthDto(undefined)
+    }
   }), [authDto]);
   return (
     <context.Provider
