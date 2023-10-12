@@ -1,59 +1,83 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/button'
 import { Logo } from '../../components/logo'
 import { TextInput } from '../../components/text-input'
 import { useLoginMutation } from '../../hooks/auth'
 import { routes } from '../../router/routes'
+import * as Yup from 'yup'
 import styles from './styles.module.css'
+import { useFormik } from 'formik'
+
+const formSchema = Yup.object().shape({
+  email: Yup.string().email('Email inválido').required('Campo obrigatório'),
+  password: Yup.string().required('Campo obrigatório'),
+})
+
+type FormSchema = Yup.InferType<typeof formSchema>
 
 export function LoginPage() {
-  const [email, setEmail] = useState<string>()
-  const [emailError, setEmailError] = useState<string>()
-  const [password, setPassword] = useState<string>()
-  const [passwordError, setPasswordError] = useState<string>()
   const { mutateAsync: login } = useLoginMutation()
   const navigate = useNavigate()
+
+  const { errors, values, touched, setFieldValue, setFieldTouched, submitForm, resetForm, isValid } = useFormik<FormSchema>({
+    initialValues: {} as FormSchema,
+    validationSchema: formSchema,
+    onSubmit: async (values) => {
+      try {
+        await login({
+          email: values.email,
+          password: values.password,
+        })
+        navigate(routes.HOME())
+      } catch {}
+    },
+  })
 
   const goToRegister = () => {
     navigate(routes.REGISTER())
   }
 
-  const loginClick = async () => {
-    let error = false
-    if (!email) {
-      error = true
-      setEmailError('Campo obrigatório')
-    }
-    if (!password) {
-      error = true
-      setPasswordError('Campo obrigatório')
-    }
-    if (error) return
-    try {
-      await login({
-        email: email!,
-        password: password!,
-      })
-      navigate(routes.HOME())
-    } catch {}
-  }
-
   return (
     <div className={styles.container}>
-      <div className={styles.form}>
+      <form
+        className={styles.form}
+        onSubmit={(e) => {
+          e.preventDefault()
+          submitForm()
+        }}
+      >
         <Logo />
         <div className={styles.inputsButton}>
           <div className={styles.inputs}>
-            <TextInput full type="email" placeholder="E-mail" value={email} onChange={setEmail} errorMessage={emailError} />
-            <TextInput full type="password" placeholder="Senha" value={password} onChange={setPassword} errorMessage={passwordError} />
+            <TextInput
+              full
+              type="email"
+              placeholder="E-mail"
+              value={values.email}
+              onChange={(value) => {
+                setFieldTouched('email', true)
+                setFieldValue('email', value)
+              }}
+              errorMessage={touched.email ? errors.email : undefined}
+            />
+            <TextInput
+              full
+              type="password"
+              placeholder="Senha"
+              value={values.password}
+              onChange={(value) => {
+                setFieldTouched('password', true)
+                setFieldValue('password', value)
+              }}
+              errorMessage={touched.password ? errors.password : undefined}
+            />
           </div>
-          <Button onClick={loginClick}>LOGIN</Button>
+          <Button type='submit'>LOGIN</Button>
         </div>
         <div className={styles.hasNoAccount}>
           Não tem uma conta? <span onClick={goToRegister}>Registre-se</span>
         </div>
-      </div>
+      </form>
     </div>
   )
 }
