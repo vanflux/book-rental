@@ -7,12 +7,13 @@ import { routes } from '../../router/routes'
 import * as Yup from 'yup'
 import styles from './styles.module.css'
 import { useFormik } from 'formik'
+import { loginFormSchema } from '../login'
 
-const formSchema = Yup.object().shape({
-  email: Yup.string().email('Email inválido').required('Campo obrigatório'),
-  password: Yup.string().required('Campo obrigatório'),
-  confirmPassword: Yup.string().oneOf([Yup.ref('password')], 'As senhas devem ser iguais')
-})
+const formSchema = loginFormSchema.concat(
+  Yup.object().shape({
+    confirmPassword: Yup.string().oneOf([Yup.ref('password')], 'As senhas devem ser iguais')
+  })
+);
 
 type FormSchema = Yup.InferType<typeof formSchema>
 
@@ -20,7 +21,7 @@ export function RegisterPage() {
   const { mutateAsync: register } = useRegisterMutation()
   const navigate = useNavigate()
 
-  const { errors, values, touched, setFieldValue, setFieldTouched, submitForm, resetForm, isValid } = useFormik<FormSchema>({
+  const { errors, values, touched, setFieldValue, setFieldTouched, submitForm } = useFormik<FormSchema>({
     initialValues: {} as FormSchema,
     validationSchema: formSchema,
     onSubmit: async (values) => {

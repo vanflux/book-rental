@@ -8,20 +8,20 @@ import * as Yup from 'yup'
 import styles from './styles.module.css'
 import { useFormik } from 'formik'
 
-const formSchema = Yup.object().shape({
+export const loginFormSchema = Yup.object().shape({
   email: Yup.string().email('Email inválido').required('Campo obrigatório'),
   password: Yup.string().required('Campo obrigatório'),
 })
 
-type FormSchema = Yup.InferType<typeof formSchema>
+type FormSchema = Yup.InferType<typeof loginFormSchema>
 
 export function LoginPage() {
   const { mutateAsync: login } = useLoginMutation()
   const navigate = useNavigate()
 
-  const { errors, values, touched, setFieldValue, setFieldTouched, submitForm, resetForm, isValid } = useFormik<FormSchema>({
+  const { errors, values, touched, setFieldValue, setFieldTouched, submitForm } = useFormik<FormSchema>({
     initialValues: {} as FormSchema,
-    validationSchema: formSchema,
+    validationSchema: loginFormSchema,
     onSubmit: async (values) => {
       try {
         await login({
